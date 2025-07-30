@@ -1,0 +1,246 @@
+import random
+import time
+
+guess_count = 0
+
+
+high_roasts = [
+  "NASA just called 🛰️, they need their numbers back. Lower!",
+  "That guess is higher than snoop dog in a Jamaican restuarant",
+  "This ain't the stock market",
+  "Sorry, just checking if i asked for your weight somewhere in the instructions. Lower!",
+  "That guess is higher than gas prices in July. Bring it down",
+  "Yo come back to earth, homie. Lower!",
+  "I didnt ask how many times you got cheated on bro, this is a guessing game, not free therapy. Lower!",
+  "Casually told me how many STDs you got. Lower!"
+]
+
+low_roasts = [
+  "Just wondering where i asked for your iQ",
+  "I don't think I asked how many brain cells you got",
+]
+
+sixnine_roasts = [
+  "Congratulations, you are now in the FBI watchlist",
+  "I didn't ask you to show me your browser history",
+  "I bet you giggled while typing that",
+  "You really thought it will be that easy?" 
+]
+
+def high_roast():
+  if high_roasts:
+    roast = random.choice(high_roasts)
+    print(roast)
+    high_roasts.remove(roast)
+  else:
+    print("I'm legally not allowed to roast you anymore")
+    print("But here is the number of a psychiatrist who deals with dumb kids: (519) 977-0777")
+    print("Or better still, we have a hotline for people just like you: 1-800-GUESS-BETTER")
+    roast_option = input("Do you want to \n1. Call Dr. M. Azam Khan, MD; the psychiatrist \n2. Call our hotline for emotional support. \n3. Keep getting bullied by the damn game. \n4. Toss your phone to the wall, no judgement me from here \n")
+    if roast_option == 1:
+      print("...")
+      time.sleep(2)
+      print("Just recieved a response from Dr. Azam; they won't accept anyone of your caliber")
+    elif roast_option == 2:
+      print("We understand that it's hard to think but our guess is that you are a waste of time")
+      print("(You are only proving my point if you don't get the joke)")
+    elif roast_option == 3:
+      print("You never had a choice, dum-dum")
+    elif roast_option == 4:
+      print("Typing X would be easier")
+
+def sixnine_roast():
+  if sixnine_roasts:
+    roast = random.choice(sixnine_roasts)
+    print(roast)
+    sixnine_roasts.remove(roast)
+  else:
+    print("Be serious now, this ain't the hub")
+
+def game_mode(max_guesses):
+  global guess_count
+  global secret_number
+  while True:
+    try:
+      low = input("What’s the lowest number I should think of? ")
+      if low.strip().lower() == "x":
+        return
+      high = input("Now nerd, whats the highest number i should think of?.")
+      if high.strip().lower() == "x":
+        return
+      if low >= high:
+        print("Use your head")
+        continue
+      number_validation = input("Are you happy with  your numbers, Y/N: ")
+      if number_validation.strip().title() == "N":
+        continue
+      if number_validation.strip().title() == "Y":
+        break
+    except ValueError:
+      print("I know its a guessing game but use your head a litle bit")
+
+  converted_low = int(low)
+  converted_high = int(high)
+  range_difference = int(converted_high-converted_low)
+  
+  if range_difference <= 9:
+    print("No judgement, but I'm judging, do you just want to win fast so that you can feel good about yourself? Anyways let's see what you got.")
+  elif range_difference <= 99:
+    print("Aight champ, let's see what you got")
+  elif range_difference <= 999:
+    print("I see you like challenges huh?, let's see if you built for this one")
+  else:
+    print("Ion know bruh, but there's a fine line between cocky and confidence. Lets hope you on the right side")
+  print(f"You picked a range of {range_difference + 1} numbers") 
+  time.sleep(0.3)
+  secret_number = random.randint(converted_low, converted_high)
+  print("I have randomly chosen a number, try to guess it.")
+  
+  while True:
+    guess = int(input("Guess the number and press enter: "))
+    guess_count += 1
+    if guess == secret_number:
+      print(f"Congratulations, your used {guess_count} tries")
+      if guess_count < 4:
+        print("You got brainpower mixed with luck, how's your social life tho, just curious")
+        print("Anyways, since you are so smart, try our hard and insane mode")
+      elif guess_count < 10:
+        print("You clearly think")
+      elif guess_count < 20:
+        print("You struggled, try to get it in a lower number of guesses")
+      else:
+        print("I'm surprised you still here. What happened? Did your brain go on vacay?")
+      break
+
+    elif guess == 0 and guess != secret_number:
+      print("I didn't ask for your body count ")
+      continue
+
+    elif guess == 69 and guess != secret_number:
+      sixnine_roast()
+      continue
+
+    elif guess < 10 and guess != secret_number:
+      print(random.choice(low_roasts))
+      
+    elif guess > secret_number:
+      guess_difference = guess - secret_number
+      percent_difference = guess_difference / secret_number
+      if percent_difference <= 0.05:
+        print("You are this close 👌, homie. Just a teeny bit lower")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.1:
+        print("You are breathing on it Sherlock. Lower")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.3:
+        print("A little lower, Cuz.")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.5:
+        print("I asked for a number, not your student debt. Lower it.")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 1:
+        print("Are we tryna guess how many digits pi has? Thats at least twice the number 💀")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 2:
+        high_roast()
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif guess > converted_high:
+        print("Are you good?")
+        print(f"You have {max_guesses - guess_count} trials left")
+      else:
+        print("A blindfolded toddler could do better. Lower!")
+        print(f"You have {max_guesses - guess_count} trials left")
+
+    elif guess < secret_number:
+      guess_difference = secret_number - guess
+      percent_difference = guess_difference / secret_number
+
+      
+      if percent_difference <= 0.05:
+        print("You are this close 👌, homie. Just a teeny bit higher")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.1:
+        print("You are breathing just below it Sherlock 💨. Higher")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.3:
+        print("A little higher, Cuz.")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 0.5:
+        print("Just a bit far away from it. Higher")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif percent_difference <= 1:
+        print("Thats too low!")
+        print(f"You have {max_guesses - guess_count} trials left")
+      elif guess < converted_low:
+        print("Are you good?")
+        print(f"You have {max_guesses - guess_count} trials left")
+      else:
+        print("A blindfolded toddler could do better. Higher")
+        print(f"You have {max_guesses - guess_count} trials left")
+
+    else:
+      continue
+
+    if guess_count == max_guesses and guess != secret_number:
+      print("You lost")
+      print(f"The answer was {secret_number}")
+      break
+    else:
+      continue
+
+menu_options = [
+  "A. Normal Mode",
+  "B. Hard Mode",
+  "C. Insane Mode",
+  "D. Custom Mode",
+  "E. View Number Of Guesses Done",
+  "F. View Custom Mode Instructions",
+  "G. View Normal Mode Instructions",
+  "H. View Hard Mode Instructions",
+  "I. View Insane Mode Instructions",
+  "X. QUIT"
+]
+
+def menu():
+  while True:
+    for menu_option in (menu_options):
+      print(menu_option)
+    menu_choice = input("Which option: ")
+    if menu_choice.strip().lower() == "a":
+      game_mode(float("inf"))
+    elif menu_choice.strip().lower() == "b":
+      game_mode(7)
+    elif menu_choice.strip().lower() == "c":
+      game_mode(3)
+    elif menu_choice.strip().lower() == "d":
+      max_guess = int(input("Set the maximum number of guesses"))
+      game_mode(max_guess)
+    elif menu_choice.strip().lower() == "e":
+      print(guess_count)
+    elif menu_choice.strip().lower() == "f":
+      print("Custom Mode: The game ends after after a number of trials of your choosing")
+    elif menu_choice.strip().lower() == "h":
+      print("Hard Mode: The game ends after 7 guesses")
+    elif menu_choice.strip().lower() == "i":
+      print("Insane Mode: The game ends after 3 guesses")
+    elif menu_choice.strip().lower() == "n":
+      print("You got an infinite number of guesses")
+    elif menu_choice.strip().lower() == "x":
+      print("Bye-bye loser, no one wants to see you either")
+      break
+    else:
+      print("What now?")
+      
+print("Welcome to the number guessing game")
+print("In this game, you try to guess the number in as few number of guesses as possible")
+print("At any point in the game you can exit by typing 'X'")
+print("At any point in the game, you can bring up the menu by typing 'Menu'")
+start = input("If you have finished reading and wish to continue, press enter")
+
+
+while True:
+  show_menu = input("Type 'menu' to start: ")
+  if show_menu.strip().lower() == "menu":
+   menu()
+  else:
+    pass
